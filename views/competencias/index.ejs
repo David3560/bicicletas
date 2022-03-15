@@ -1,0 +1,119 @@
+<%- include("../partials/_header") %>
+
+    <div class="container col-md-12">
+        
+        <div class="row mt-5">
+            
+            <div class="col-md-7">
+                <h1 style="font-family: -apple-system">Competencias</h1>
+                <table id= "tablaCompetencias" class= "table mt-5">
+                    <thead>
+                        <tr style="font-family: -apple-system">
+                            <th style="display: none;">ID</th>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Fecha</th>
+                            <th>acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% competencias.forEach( (competencia) =>{ %>
+                        <tr>
+                            <td style="display: none;"><%= competencia._id %></td>
+                            <td><%= competencia.nombre %></td>
+                            <td><%= competencia.descripcion %></td>
+                            <td><%= competencia.fecha %></td>
+                            <td>
+                                <a type="button" class="btnEditar btn btn-primary bi bi-pencil"></a>
+                                <a href="/competencia/borrar/<%= competencia._id %>" class="btn btn-danger bi bi-trash"></a>
+                            </td>
+
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-5">
+                <div class="card-body">
+                    <form action="/competencia/crear" method="POST">
+                        <div class="form-group">
+                            <input type="text" name="nombre" placeholder="Ingrese el nombre de la competencia" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="descripcion" placeholder="describa la competencia" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <input type="date" name="fecha" placeholder="seleccione cuando será la competencia" class="form-control">
+                        </div>
+                    <button style="font-family: -apple-system" type="submit" class="btn btn-primary"><i class=" bi bi-save"></i>
+                    guardar Competencia
+                    </button>
+                    </form>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- modal-->
+    <div id="modalCompetencia" class="modal fade" tabindex="-1" aria-labelledby="modalCompetencia" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+              <h5 class="modal-title" id="exampleModalLabel">Editar Competencia</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+  
+            <div class="modal-body">
+              <form action="/competencia/editar" method="POST">
+                <input type="text" name="id_editar" id="id_editar" hidden>
+                <div class="mb-3">
+                    <label for="nombre_editar" class="col-form-label">Nombre</label>
+                    <input id="nombre_editar" name="nombre_editar" type="text" class="form-control" value="">
+                </div>
+                <div class="mb-3">
+                    <label for="descripcion_editar" class="col-form-label">Descripción</label>
+                    <input id="descripcion_editar" name="descripcion_editar" type="text" class="form-control" value="">
+                </div>
+                <div class="mb-3">
+                    <label for="fecha_editar" class="col-form-label">Fecha</label>
+                    <input id="fecha_editar" name="fecha_editar" type="date" class="form-control" value="">
+                </div>
+                
+            </div>
+  
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Actualizar</button>
+            </div>
+  
+            </form>
+            
+          </div>
+        </div>
+    </div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+<script>const modalCompetencia = new bootstrap.Modal(document.getElementById('modalCompetencia'))
+
+    const on = (element, event, selector, handler) => {
+        element.addEventListener(event, e => {
+            if(e.target.closest(selector)){
+                handler(e)
+            }
+        })
+    }
+    
+    on(document, 'click', '.btnEditar', e => {
+        const fila = e.target.parentNode.parentNode
+        id_editar.value = fila.children[0].innerHTML
+        nombre_editar.value = fila.children[1].innerHTML
+        descripcion_editar.value = fila.children[2].innerHTML
+        fecha_editar.value = fila.children[3].innerHTML
+        modalCompetencia.show() 
+    })</script>
+
+
+<%- include("../partials/_footer") %>

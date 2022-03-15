@@ -1,0 +1,164 @@
+<%- include("../partials/_header") %>
+    <div class="container col-md-12">
+        <div class="row mt-5">
+            <div class="col-md-7">
+                <h1 style="font-family: -apple-system">Bicicletas</h1>
+                <table id= "tablaCompetencias" class= "table mt-5">
+                    <thead>
+                        <tr style="font-family: -apple-system">
+                            <th style="display: none;">ID</th>
+                            <th>Marca</th>
+                            <th>Tipo</th>
+                            <th>Color</th>
+                            <th>Estado</th>
+                            <th>Altura</th>
+                            <th>Longitud</th>
+                            <th>acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% bicicletas.forEach( (bicicleta)=> { %>
+                            <tr>
+                                <td style="display: none;"><%= bicicleta._id %></td>
+                                <td><%= bicicleta.marca %></td>
+                                <td><%= bicicleta.tipo %></td>
+                                <td><%= bicicleta.color %></td>
+                                <td><%= bicicleta.estado %></td>
+                                <td><%= bicicleta.altura %></td>
+                                <td><%= bicicleta.longitud %></td>
+                                <td>
+                                    <a type="button" class="btnEditar btn btn-primary bi bi-pencil"></a>
+                                    <a href="/bicicleta/borrar/<%= bicicleta._id %>" class="btn btn-danger bi bi-trash"></a>
+                                </td>
+                            </tr>
+                            <% }) %>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-5">
+                <div class="card-body">
+                    <form action="/bicicleta/crear" method="POST">
+                        <div class="form-group">
+                            <input type="text" name="marca" placeholder="Ingrese la marca de la bicicleta" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <select name="tipo" class="form-control">
+                                <option>Cross</option>
+                                <option>Mountain</option>
+                                <option>Bike</option>
+                                <option>Rutas</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="color" placeholder="Escriba el color de la bicicleta" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <select name="estado" class="form-control">
+                                <option> Disponible</option>
+                                <option>No disponible</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input type="number" name="altura" placeholder="Escriba la altura de la bicicleta en CM" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <input type="number" name="longitud" placeholder="Escriba la longitud de la bicicleta en CM" class="form-control">
+                        </div>
+                    <button style="font-family: -apple-system" type="submit" class="btn btn-primary"><i class=" bi bi-save"></i>
+                    guardar bicicleta
+                    </button>
+                    </form>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- modal-->
+    <div id="modalBicicleta" class="modal fade" tabindex="-1" aria-labelledby="modalBicicleta" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+              <h5 class="modal-title" id="exampleModalLabel">Editar Bicicleta</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+  
+            <div class="modal-body">
+              <form action="/bicicleta/editar" method="POST">
+                <input type="text" name="id_editar" id="id_editar" hidden>
+                <div class="mb-3">
+                    <label for="marca" class="col-form-label">Marca</label>
+                    <input type="text" id="marca_editar" name="marca_editar" placeholder="Ingrese la marca de la bicicleta" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="descripcion_editar" class="col-form-label">Tipo</label>
+                    <select id="tipo_editar" name="tipo_editar" class="form-control">
+                        <option>Cross</option>
+                        <option>Mountain</option>
+                        <option>Bike</option>
+                        <option>Rutas</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <input type="text" id= "color_editar"name="color_editar" placeholder="Escriba el color de la bicicleta" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="fecha_editar" class="col-form-label">Estado</label>
+                    <select id="estado_editar" name="estado_editar" class="form-control">
+                        <option> Disponible</option>
+                        <option>No disponible</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <input type="number" id="altura_editar" name="altura_editar" placeholder="Escriba la altura de la bicicleta en CM" class="form-control">
+                </div>
+                <div class="mb-3">
+                <input type="number" id="longitud_editar" name="longitud_editar" placeholder="Escriba la longitud de la bicicleta en CM" class="form-control">
+                </div>
+                
+            </div>
+  
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Actualizar</button>
+            </div>
+  
+            </form>
+            
+          </div>
+        </div>
+    </div>
+       
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script>
+    const modalBicicleta = new bootstrap.Modal(document.getElementById('modalBicicleta'))
+
+const on = (element, event, selector, handler) => {
+  element.addEventListener(event, e => {
+      if(e.target.closest(selector)){
+          handler(e)
+      }
+  })
+}
+
+on(document, 'click', '.btnEditar', e => {
+  const fila = e.target.parentNode.parentNode
+  id_editar.value = fila.children[0].innerHTML
+  marca_editar.value = fila.children[1].innerHTML
+  tipo_editar.value = fila.children[2].innerHTML
+  color_editar.value = fila.children[3].innerHTML
+  estado_editar.value = fila.children[4].innerHTML
+  altura_editar.value = fila.children[5].innerHTML
+  longitud_editar.value = fila.children[6].innerHTML
+  modalBicicleta.show() 
+})
+
+
+
+</script>
+
+
+<%- include("../partials/_footer") %>
